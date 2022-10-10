@@ -10,14 +10,8 @@ def query_hibp_api(head_hash: str) -> list:
     except requests.exceptions.ConnectionError:
         sys.exit("Connection Error.")
 
-    # See response data format and make a list by splitting on \r\n
-    # list_of_breaches = res.text.split(sep="\r\n")
-    
-    # See response data and make a list of lines
-    list_of_breaches = res.text.splitlines()
-
-    # List comprehension of tuples having tail_hash and leak_count
-    t_leaks = [tuple(breach.split(":")) for breach in list_of_breaches]
+    # Tuple comprehension of lists having tail_hash and leak_count
+    t_leaks = (line.split(":") for line in res.text.splitlines())
     return t_leaks if t_leaks else []
 
 
@@ -27,7 +21,7 @@ def get_pswd_leak_count(password: str) -> int:
     first_5_char, rest_char = hash_of_password[:5], hash_of_password[5:]
     tail_leaks = query_hibp_api(first_5_char)
 
-    # Loop through the list of tuples, looking for a match of tail hash
+    # Loop through the tuple of lists, looking for a match of tail hash
     for tail_hash, leak_ctr in tail_leaks:
         if tail_hash == rest_char:
             return int(leak_ctr)
