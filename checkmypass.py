@@ -11,7 +11,10 @@ def query_hibp_api(head_hash: str) -> list:
         sys.exit("Connection Error.")
 
     # See response data format and make a list by splitting on \r\n
-    list_of_breaches = res.text.split(sep="\r\n")
+    # list_of_breaches = res.text.split(sep="\r\n")
+    
+    # See response data and make a list of lines
+    list_of_breaches = res.text.splitlines()
 
     # List comprehension of tuples having tail_hash and leak_count
     t_leaks = [tuple(breach.split(":")) for breach in list_of_breaches]
