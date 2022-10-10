@@ -34,6 +34,9 @@ def get_pswd_leak_count(password: str) -> int:
 
 
 def main():
+    if (len(sys.argv) == 1):
+        sys.exit('Too few command-line arguments! Enter some passwords to check after filename.')
+
     for pswd in sys.argv[1:]:
         leak_count = get_pswd_leak_count(pswd)
         if leak_count:
