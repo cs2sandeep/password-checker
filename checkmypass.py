@@ -15,9 +15,7 @@ def query_hibp_api(head_hash: str) -> list:
 
     # List comprehension of tuples having tail_hash and leak_count
     t_leaks = [tuple(breach.split(":")) for breach in list_of_breaches]
-    if t_leaks:
-        return t_leaks
-    return []
+    return t_leaks if t_leaks else []
 
 
 def get_pswd_leak_count(password: str) -> int:
