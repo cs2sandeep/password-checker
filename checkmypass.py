@@ -22,13 +22,13 @@ def query_hibp_api(head_hash: str) -> list:
 
 def get_pswd_leak_count(password: str) -> int:
     # Generate SHA1 hash. As per API, send first 5 hashcharacters of password
-    hash_of_password = hashlib.sha1(password.encode()).hexdigest()
+    hash_of_password = hashlib.sha1(password.encode()).hexdigest().upper()
     first_5_char, rest_char = hash_of_password[:5], hash_of_password[5:]
-    tail_leaks = query_hibp_api(first_5_char.upper())
+    tail_leaks = query_hibp_api(first_5_char)
 
     # Loop through the list of tuples, looking for a match of tail hash
     for tail_hash, leak_ctr in tail_leaks:
-        if tail_hash == rest_char.upper():
+        if tail_hash == rest_char:
             return int(leak_ctr)
     return 0
 
